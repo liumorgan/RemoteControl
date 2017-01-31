@@ -98,10 +98,8 @@ public class MainMenu extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-			//	textAreaLog.append(sockets[comboBox.getSelectedIndex()]);
 				textAreaLog.append(comboBox.getSelectedItem().toString().trim());
 				int socekt_id = Integer.parseInt(comboBox.getSelectedItem().toString().trim());
-				//textAreaLog.append("Trying to kill agent with id " + socekt_id + "\n");
 				sendMessageToServer("client-kill-"+socekt_id+"\n");
 			}
 			
@@ -125,7 +123,6 @@ public class MainMenu extends JFrame {
 				client = true;
 				textAreaLog.append("Trying to registrate \n");
 				sendMessageToServer("client-registrate-n");
-				//sendMessageToServer("client-kill-" + 1);
 			}
 		});
 		
@@ -159,14 +156,12 @@ public class MainMenu extends JFrame {
 		try {		
 			
 				serverMessage = reader.readLine();
-				//lblChoseAnOption.setText("srv msg " + serverMessage);
 				System.out.println("reading msg from server " + serverMessage);
 				textAreaLog.append("reading msg from server:   " + serverMessage+ "\n");
 				if(serverMessage.contains("kill")){
-					
+					shutdown();
 				}else if(serverMessage.contains("status-")){
 					serverMessage = serverMessage.replaceAll("status-", "");
-					//serverMessage = serverMessage.replaceAll("-end", "");
 					sockets = serverMessage.split("-");
 					comboBox.setModel(new DefaultComboBoxModel(sockets));
 					textAreaLog.append("updated server status \n");
@@ -207,12 +202,6 @@ public class MainMenu extends JFrame {
 			 reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
 			 writer = new PrintWriter(clientSocket.getOutputStream(), true);		
 			 
-			//writer.println(clientMessage);
-			
-			//Thread.sleep(5000);
-			//writer.println(clientMessage);
-		//	String serverMessage = reader.readLine();
-			//System.out.print(serverMessage);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

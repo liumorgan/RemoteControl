@@ -49,7 +49,7 @@ void init(){
 int get_socket_index(){
 		int i = 0;
 		int open_socket_index = -1;
-		printf("start looking for open socekt \n");	
+		//printf("start looking for open socekt \n");	
 			for(i = 0; i < SERVER_SIZE; i++){
 				if(sockets_avability_mask[i] == 1){
 					open_socket_index = i;
@@ -66,13 +66,6 @@ void sendServerCallback(int mySocket){
 	printf("want to sended callback to socket with id %d \n",mySocket );
 
 	send(mySocket, "Connected\n",11, 0);
-
-/*	if((write(sockets[client_socket], "siema1\n", 8)) < 0){
-		perror("error");
-	}else{
-		printf("sended callback \n");
-	}
-*/
 }
 
 void sendServerConnectionStatus(){
@@ -87,11 +80,9 @@ void sendServerConnectionStatus(){
 		
 		char id[2] ;
 		id[1] = 0;
-		//char * ptr = * id;
 				for(i = 0; i < SERVER_SIZE; i++){
 					if(sockets_avability_mask[i] == 0 && sockets[i] != client_socket){
 						id[0] = sockets[i] +'0';
-					//	printf("next id  %s but int is %d \n",id,sockets[i]);
 						strcat(msg,id);
 						strcat(msg,"-");
 					}	
@@ -99,12 +90,6 @@ void sendServerConnectionStatus(){
 		strcat(msg,"\n");
 		printf("server status %s \n", msg);
 		send(client_socket, msg,64, 0);
-/*		if((write(sockets[client_socket], msg, 64)) < 0){
-			perror("error");
-		}else{
-			printf("server status sended \n");
-		}
-*/
 	}else{
 		printf("error no client found \n");	
 	}
@@ -145,16 +130,6 @@ void execute_command(char** messages,int socket_id){
 		printf("command is not recognized \n" );
 	} 
 
-//clear
-		/*int i;
-		
-		for (i = 0; *(messages + i); i++)
-		{
-		    free(*(messages + i));
-		}
-		printf("\n");
-		free(messages);
-	    } */
 }
 
 char** str_split(char* a_str, const char a_delim)
@@ -167,7 +142,6 @@ char** str_split(char* a_str, const char a_delim)
     delim[0] = a_delim;
     delim[1] = 0;
 
-    /* Count how many elements will be extracted. */
     while (*tmp)
     {
         if (a_delim == *tmp)
@@ -178,11 +152,8 @@ char** str_split(char* a_str, const char a_delim)
         tmp++;
     }
 
-    /* Add space for trailing token. */
     count += last_comma < (a_str + strlen(a_str) - 1);
 
-    /* Add space for terminating null string so caller
-       knows where the list of returned strings ends. */
     count++;
 
     result = malloc(sizeof(char*) * count);
@@ -209,7 +180,6 @@ char** str_split(char* a_str, const char a_delim)
 void* odbieranie (void* structure){
 	struct socket_msq *message_wraper = (struct socket_msq*)structure;
 	char buffer[2000];
-	//int mySocket = *(int *)structure;
     char** messages;
 
 		int read_size  = 0;
@@ -217,7 +187,6 @@ void* odbieranie (void* structure){
 	    {
 		bzero(buffer,2000);
 		if( (read_size = read(message_wraper->socket , buffer , 2000)) > 0){
-				// read msg
 			printf("recived raw msg from socket with id %d msg is %s \n", message_wraper->socket, buffer);
 			messages = str_split(buffer,'-');
 			pthread_mutex_lock(&example_mutex);	
